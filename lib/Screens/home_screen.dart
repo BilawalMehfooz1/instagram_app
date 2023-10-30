@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:instagram_app/Screens/login_screen.dart';
-// import 'package:instagram_app/data/screen_size.dart';
+import 'package:instagram_app/Screens/sign_up_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
@@ -14,7 +13,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const LoginScreen();
+    return const SignupScreen();
     // return LayoutBuilder(
     //   builder: (context, constraints) {
     //     if (constraints.maxWidth > webScreenSize) {

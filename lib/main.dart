@@ -12,8 +12,8 @@ import 'package:instagram_app/Screens/mobile_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-  options: DefaultFirebaseOptions.currentPlatform,
-);
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -23,16 +23,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData.dark().copyWith(
-          scaffoldBackgroundColor: mobileBackgroundColor,
+      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: mobileBackgroundColor,
+      ),
+      home: const Scaffold(
+        body: HomeScreen(
+          webScreenLayout: WebScreen(),
+          mobileScreenLayout: MobileScreen(),
         ),
-        home: const Scaffold(
-          body: HomeScreen(
-            webScreenLayout: WebScreen(),
-            mobileScreenLayout: MobileScreen(),
-          ),
-        ));
+      ),
+    );
   }
 }

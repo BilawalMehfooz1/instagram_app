@@ -1,24 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:instagram_app/Screens/sign_up_screen.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram_app/data/colors.dart';
 import 'package:instagram_app/widgets/text_field_input.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
+  final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
 
   @override
   void dispose() {
     super.dispose();
+    _nameController.dispose();
     _emailController.dispose();
+    _usernameController.dispose();
     _passwordController.dispose();
   }
 
@@ -40,21 +43,39 @@ class _LoginScreenState extends State<LoginScreen> {
               color: primaryColor,
             ),
             const SizedBox(height: 64),
-            //email text field
+
+            //Email text field
             TextFieldInput(
-              hintText: 'Enter your email',
               keyboardType: TextInputType.emailAddress,
+              hintText: 'Email',
               textEditingController: _emailController,
             ),
             const SizedBox(height: 20),
+
+            //Name text field
+            TextFieldInput(
+              keyboardType: TextInputType.text,
+              hintText: 'Full Name',
+              textEditingController: _nameController,
+            ),
+            const SizedBox(height: 20),
+            //email text field
+            TextFieldInput(
+              hintText: 'Username',
+              keyboardType: TextInputType.text,
+              textEditingController: _usernameController,
+            ),
+            const SizedBox(height: 20),
+
             //password text field
             TextFieldInput(
               keyboardType: TextInputType.text,
-              hintText: 'Enter your password',
+              hintText: 'Password',
               textEditingController: _passwordController,
               obscureText: true,
             ),
             const SizedBox(height: 20),
+
             //login button
             Container(
               width: double.infinity,
@@ -64,11 +85,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 borderRadius: BorderRadius.all(Radius.circular(4)),
                 color: blueColor,
               ),
-              child: const Text('Log in'),
+              child: const Text(
+                'Sign up',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
-            const SizedBox(
-              height: 12,
-            ),
+            const SizedBox(height: 12),
+
             //transition to signning up
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -76,24 +102,21 @@ class _LoginScreenState extends State<LoginScreen> {
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: const Text(
-                    "Don't have an account?",
+                    "Have an account?",
                     style: TextStyle(
                       fontSize: 16,
                     ),
                   ),
                 ),
                 InkWell(
-                  onTap: () {
-                    const SignupScreen();
-                  },
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: const Text(
-                      " Sign up.",
+                      " Log in",
                       style: TextStyle(
                         fontSize: 16,
                         color: blueColor,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
                   ),
