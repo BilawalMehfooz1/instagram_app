@@ -1,6 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instagram_app/resources/snackbar_function.dart';
 
 class AuthMethods {
@@ -13,7 +13,7 @@ class AuthMethods {
     required String password,
     required String username,
     required String fullname,
-    required BuildContext context,
+    required ScaffoldMessengerState scaffoldMessengerState,
   }) async {
     String res = 'Some error occured';
     try {
@@ -39,7 +39,11 @@ class AuthMethods {
       }
     } on FirebaseAuthException catch (error) {
       res = error.toString();
-      showSnackBar(content: res, context: context);
+
+      showSnackBar(
+        content: res,
+        scaffoldMessengerState: scaffoldMessengerState,
+      );
     }
     return res;
   }

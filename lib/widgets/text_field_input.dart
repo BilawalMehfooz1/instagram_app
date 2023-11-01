@@ -4,20 +4,22 @@ class TextFieldInput extends StatelessWidget {
   const TextFieldInput({
     super.key,
     this.obscureText = false,
-    required this.keyboardType,
     required this.hintText,
+    required this.validator,
+    required this.keyboardType,
     required this.textEditingController,
   });
 
-  final bool obscureText;
   final String hintText;
+  final bool obscureText;
   final TextInputType keyboardType;
+  final FormFieldValidator validator;
   final TextEditingController textEditingController;
   @override
   Widget build(BuildContext context) {
     final inputBorder =
         OutlineInputBorder(borderSide: Divider.createBorderSide(context));
-    return TextField(
+    return TextFormField(
       controller: textEditingController,
       decoration: InputDecoration(
         hintText: hintText,
@@ -29,6 +31,7 @@ class TextFieldInput extends StatelessWidget {
       ),
       keyboardType: keyboardType,
       obscureText: obscureText,
+      validator: validator,
     );
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:instagram_app/Screens/sign_up_screen.dart';
 import 'package:instagram_app/data/colors.dart';
 import 'package:instagram_app/widgets/text_field_input.dart';
 
@@ -45,6 +44,14 @@ class _LoginScreenState extends State<LoginScreen> {
               hintText: 'Enter your email',
               keyboardType: TextInputType.emailAddress,
               textEditingController: _emailController,
+              validator: (value) {
+                if (value == null ||
+                    value.trim().isEmpty ||
+                    !value.contains('@')) {
+                  return 'invalid email address.';
+                }
+                return null;
+              },
             ),
             const SizedBox(height: 20),
             //password text field
@@ -53,6 +60,14 @@ class _LoginScreenState extends State<LoginScreen> {
               hintText: 'Enter your password',
               textEditingController: _passwordController,
               obscureText: true,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Password is required.';
+                } else if (value.length < 8) {
+                  return 'Password must be at least 8 characters long.';
+                }
+                return null;
+              },
             ),
             const SizedBox(height: 20),
             //login button
@@ -83,9 +98,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 InkWell(
-                  onTap: () {
-                    const SignupScreen();
-                  },
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: const Text(
