@@ -13,7 +13,11 @@ class AuthMethods {
     required String username,
     required String fullname,
   }) async {
+<<<<<<< HEAD
     print('signup of auth method is opened');
+=======
+    print('signup method is called');
+>>>>>>> 31ac23a51f26189ad99f0923dd81d174fefc801d
     String res = 'Some error occurred';
     try {
       if (email.isNotEmpty &&
@@ -25,7 +29,10 @@ class AuthMethods {
           email: email,
           password: password,
         );
+<<<<<<< HEAD
         print(cred);
+=======
+>>>>>>> 31ac23a51f26189ad99f0923dd81d174fefc801d
         // Add user to the database
         await _firestore.collection('users').doc(cred.user!.uid).set({
           'fullname': fullname,
@@ -39,11 +46,16 @@ class AuthMethods {
       }
       print('sign up method completed');
     } on FirebaseAuthException catch (error) {
+<<<<<<< HEAD
       print('sign up method failed error: $error');
       res =
           error.message.toString(); // Update this line to get the error message
     } catch (e) {
       print('Unknown error: $e');
+=======
+      print('sign up method failed error.');
+      res = error.toString();
+>>>>>>> 31ac23a51f26189ad99f0923dd81d174fefc801d
     }
     print('error message sent');
     return res;

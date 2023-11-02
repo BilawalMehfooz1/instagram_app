@@ -32,15 +32,26 @@ class _SignupScreenState extends State<SignupScreen> {
 
   // signup user method
   void signupUser() async {
+<<<<<<< HEAD
     print('sign up method called');
     if (_formkey.currentState!.validate()) {
       print('condition became true signing in calling auth method for sign up');
+=======
+    print('sign up method is called');
+    setState(() {
+      print('loading starts');
+      _isLoading = true;
+    });
+    if (_formkey.currentState!.validate()) {
+      print('condition became true signing in calling method');
+>>>>>>> 31ac23a51f26189ad99f0923dd81d174fefc801d
       final res = await AuthMethods().signUpUser(
         email: _emailController.text,
         password: _passwordController.text,
         username: _usernameController.text,
         fullname: _nameController.text,
       );
+<<<<<<< HEAD
       if (res == 'success') {
         print('auth sign up complete');
         if (mounted) {
@@ -53,6 +64,20 @@ class _SignupScreenState extends State<SignupScreen> {
         // }
       }
     }
+=======
+      print('process complete');
+      if (res == 'success') {
+      } else {
+        if (mounted) {
+          showSnackBar(content: res, context: context);
+        }
+      }
+    }
+    setState(() {
+      print('loading ends');
+      _isLoading = false;
+    });
+>>>>>>> 31ac23a51f26189ad99f0923dd81d174fefc801d
   }
 
   @override
@@ -159,6 +184,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         decoration: const BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(4)),
                           color: blueColor,
+<<<<<<< HEAD
                         ),
                         child: const Text(
                           'Sign up',
@@ -166,7 +192,18 @@ class _SignupScreenState extends State<SignupScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
+=======
+>>>>>>> 31ac23a51f26189ad99f0923dd81d174fefc801d
                         ),
+                        child: _isLoading
+                            ? const CircularProgressIndicator()
+                            : const Text(
+                                'Sign up',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                       ),
                     ),
                     const SizedBox(height: 12),
