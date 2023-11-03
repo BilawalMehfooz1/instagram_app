@@ -31,6 +31,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   // sign up method
   void signUp() async {
+    FocusScope.of(context).unfocus();
     if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
