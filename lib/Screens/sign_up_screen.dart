@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram_app/data/colors.dart';
 import 'package:instagram_app/resources/auth_method.dart';
-import 'package:instagram_app/resources/snackbar_function.dart';
 import 'package:instagram_app/widgets/text_field_input.dart';
+import 'package:instagram_app/resources/snackbar_function.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
