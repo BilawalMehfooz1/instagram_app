@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram_app/data/colors.dart';
 import 'package:instagram_app/resources/auth_method.dart';
+import 'package:instagram_app/resources/snackbar_function.dart';
 import 'package:instagram_app/widgets/text_field_input.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -12,11 +13,12 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+  var _isLoading = false;
+  final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _formkey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -25,6 +27,32 @@ class _SignupScreenState extends State<SignupScreen> {
     _emailController.dispose();
     _usernameController.dispose();
     _passwordController.dispose();
+  }
+
+  // sign up method
+  void signUp() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+      final res = await AuthMethods().signUpUser(
+        email: _emailController.text,
+        password: _passwordController.text,
+        username: _usernameController.text,
+        fullname: _nameController.text,
+        scaffoldMessengerState: ScaffoldMessenger.of(context),
+      );
+      setState(() {
+        _isLoading = false;
+      });
+
+      if (res == 'Success') {
+      } else {
+        if (mounted) {
+          showSnackBar(content: res, context: context);
+        }
+      }
+    }
   }
 
   @override
@@ -40,7 +68,7 @@ class _SignupScreenState extends State<SignupScreen> {
             ),
             width: double.infinity,
             child: Form(
-              key: _formkey,
+              key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -120,31 +148,27 @@ class _SignupScreenState extends State<SignupScreen> {
                   //Sign up button
                   InkWell(
                     onTap: () {
-                      if (_formkey.currentState!.validate()) {
-                        AuthMethods().signUpUser(
-                          email: _emailController.text,
-                          password: _passwordController.text,
-                          username: _usernameController.text,
-                          fullname: _nameController.text,
-                          scaffoldMessengerState: ScaffoldMessenger.of(context),
-                        );
-                      }
+                      signUp();
                     },
                     child: Container(
                       width: double.infinity,
                       alignment: Alignment.center,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
                       decoration: const BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(4)),
                         color: blueColor,
                       ),
-                      child: const Text(
-                        'Sign up',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      child: _isLoading
+                          ? const CircularProgressIndicator(
+                              color: primaryColor,
+                            )
+                          : const Text(
+                              'Sign up',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -163,6 +187,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                       ),
                       InkWell(
+                        onTap: _isLoading ? null : () {},
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 8),
                           child: const Text(
