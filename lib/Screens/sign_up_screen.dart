@@ -40,7 +40,7 @@ class _SignupScreenState extends State<SignupScreen> {
         password: _passwordController.text,
         username: _usernameController.text,
         fullname: _nameController.text,
-        scaffoldMessengerState: ScaffoldMessenger.of(context),
+        context: context,
       );
       setState(() {
         _isLoading = false;

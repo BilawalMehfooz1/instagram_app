@@ -12,7 +12,7 @@ class AuthMethods {
     required String password,
     required String username,
     required String fullname,
-    required ScaffoldMessengerState scaffoldMessengerState,
+    required BuildContext context,
   }) async {
     String res = 'Some error occured';
     try {
@@ -38,6 +38,7 @@ class AuthMethods {
       }
     } on FirebaseAuthException catch (error) {
       res = error.toString();
+
     }
     return res;
   }

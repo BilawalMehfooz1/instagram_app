@@ -13,7 +13,7 @@ class TextFieldInput extends StatelessWidget {
   final String hintText;
   final bool obscureText;
   final TextInputType keyboardType;
-  final FormFieldValidator validator;
+  final String? Function(String?)? validator;
   final TextEditingController textEditingController;
   @override
   Widget build(BuildContext context) {
