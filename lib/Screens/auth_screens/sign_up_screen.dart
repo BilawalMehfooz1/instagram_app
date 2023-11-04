@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:instagram_app/Screens/auth_screens/login_screen.dart';
 import 'package:instagram_app/data/colors.dart';
 import 'package:instagram_app/resources/auth_method.dart';
 import 'package:instagram_app/widgets/text_field_input.dart';
 import 'package:instagram_app/resources/snackbar_function.dart';
+import 'package:instagram_app/Screens/screen_dimension/web_screen.dart';
+import 'package:instagram_app/Screens/screen_dimension/mobile_screen.dart';
+import 'package:instagram_app/Screens/screen_dimension/screen_dimension.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -48,12 +52,32 @@ class _SignupScreenState extends State<SignupScreen> {
       });
 
       if (res == 'Success') {
+        if (!mounted) {
+          return;
+        }
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const ScreenDimension(
+              webScreenLayout: WebScreen(),
+              mobileScreenLayout: MobileScreen(),
+            ),
+          ),
+        );
       } else {
         if (mounted) {
           showSnackBar(content: res, context: context);
         }
       }
     }
+  }
+
+  // Switch to Login method
+  void switchToLogin() {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => const LoginScreen(),
+      ),
+    );
   }
 
   @override
@@ -187,8 +211,12 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                         ),
                       ),
-                      InkWell(
-                        onTap: _isLoading ? null : () {},
+                      GestureDetector(
+                        onTap: _isLoading
+                            ? null
+                            : () {
+                                switchToLogin;
+                              },
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 8),
                           child: const Text(

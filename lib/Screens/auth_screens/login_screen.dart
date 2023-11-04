@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:instagram_app/Screens/auth_screens/sign_up_screen.dart';
 import 'package:instagram_app/data/colors.dart';
 import 'package:instagram_app/resources/auth_method.dart';
-import 'package:instagram_app/resources/snackbar_function.dart';
 import 'package:instagram_app/widgets/text_field_input.dart';
+import 'package:instagram_app/resources/snackbar_function.dart';
+import 'package:instagram_app/Screens/screen_dimension/web_screen.dart';
+import 'package:instagram_app/Screens/screen_dimension/mobile_screen.dart';
+import 'package:instagram_app/Screens/screen_dimension/screen_dimension.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -25,6 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
     _passwordController.dispose();
   }
 
+  // Login user method
   void logIn() async {
     FocusScope.of(context).unfocus();
     if (_formKey.currentState!.validate()) {
@@ -41,12 +46,32 @@ class _LoginScreenState extends State<LoginScreen> {
 
       // error messages
       if (res == 'Success') {
+        if (!mounted) {
+          return;
+        }
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const ScreenDimension(
+              webScreenLayout: WebScreen(),
+              mobileScreenLayout: MobileScreen(),
+            ),
+          ),
+        );
       } else {
         if (mounted) {
           showSnackBar(content: res, context: context);
         }
       }
     }
+  }
+
+  // Switch to Sign up method
+  void switchToSignUp() {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => const SignupScreen(),
+      ),
+    );
   }
 
   @override
@@ -142,8 +167,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
-                  InkWell(
-                    onTap: _isLoading ? null : () {},
+                  GestureDetector(
+                    onTap: _isLoading
+                        ? null
+                        : () {
+                            switchToSignUp;
+                          },
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: const Text(
