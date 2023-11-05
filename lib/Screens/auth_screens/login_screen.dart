@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:instagram_app/Screens/auth_screens/sign_up_screen.dart';
 import 'package:instagram_app/data/colors.dart';
 import 'package:instagram_app/resources/auth_method.dart';
@@ -85,19 +84,18 @@ class _LoginScreenState extends State<LoginScreen> {
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const Spacer(),
               //svg logo image
-              SvgPicture.asset(
-                'assets/images/instagram.svg',
-                height: 64,
-                color: primaryColor,
+              Image.asset(
+                'assets/images/instagram.png',
+                height: 75,
               ),
-              const SizedBox(height: 64),
+              const Spacer(),
 
               //email text field
               TextFieldInput(
-                hintText: 'Enter your email',
+                labelText: 'Username, email or mobile number',
                 keyboardType: TextInputType.emailAddress,
                 textEditingController: _emailController,
                 validator: (value) {
@@ -114,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
               //password text field
               TextFieldInput(
                 keyboardType: TextInputType.text,
-                hintText: 'Enter your password',
+                labelText: 'Password',
                 textEditingController: _passwordController,
                 obscureText: true,
                 validator: (value) {
@@ -152,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                 ),
               ),
-              const SizedBox(height: 12),
+              const Spacer(flex: 2),
 
               //transition to signning up
               Row(
@@ -171,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onTap: _isLoading
                         ? null
                         : () {
-                            switchToSignUp;
+                            switchToSignUp();
                           },
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
@@ -186,7 +184,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),

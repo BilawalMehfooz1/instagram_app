@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:instagram_app/Screens/auth_screens/login_screen.dart';
 import 'package:instagram_app/data/colors.dart';
 import 'package:instagram_app/resources/auth_method.dart';
 import 'package:instagram_app/widgets/text_field_input.dart';
 import 'package:instagram_app/resources/snackbar_function.dart';
+import 'package:instagram_app/Screens/auth_screens/login_screen.dart';
 import 'package:instagram_app/Screens/screen_dimension/web_screen.dart';
 import 'package:instagram_app/Screens/screen_dimension/mobile_screen.dart';
 import 'package:instagram_app/Screens/screen_dimension/screen_dimension.dart';
@@ -99,17 +98,16 @@ class _SignupScreenState extends State<SignupScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   //svg logo image
-                  SvgPicture.asset(
-                    'assets/images/instagram.svg',
+                  Image.asset(
+                    'assets/images/instagram.png',
                     height: 64,
-                    color: primaryColor,
                   ),
                   const SizedBox(height: 64),
 
                   //Email text field
                   TextFieldInput(
                     keyboardType: TextInputType.emailAddress,
-                    hintText: 'Email',
+                    labelText: 'Email',
                     textEditingController: _emailController,
                     validator: (value) {
                       if (value == null ||
@@ -125,7 +123,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   //Name text field
                   TextFieldInput(
                     keyboardType: TextInputType.text,
-                    hintText: 'Full Name',
+                    labelText: 'Full Name',
                     textEditingController: _nameController,
                     validator: (value) {
                       if (value == null ||
@@ -139,7 +137,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   const SizedBox(height: 20),
                   //email text field
                   TextFieldInput(
-                    hintText: 'Username',
+                    labelText: 'Username',
                     keyboardType: TextInputType.text,
                     textEditingController: _usernameController,
                     validator: (value) {
@@ -156,7 +154,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   //password text field
                   TextFieldInput(
                     keyboardType: TextInputType.text,
-                    hintText: 'Password',
+                    labelText: 'Password',
                     textEditingController: _passwordController,
                     obscureText: true,
                     validator: (value) {
@@ -215,7 +213,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         onTap: _isLoading
                             ? null
                             : () {
-                                switchToLogin;
+                                switchToLogin();
                               },
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 8),
