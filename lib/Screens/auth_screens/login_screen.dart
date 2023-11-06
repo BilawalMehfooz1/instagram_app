@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:instagram_app/Screens/auth_screens/sign_up_screen.dart';
 import 'package:instagram_app/data/colors.dart';
 import 'package:instagram_app/resources/auth_method.dart';
 import 'package:instagram_app/widgets/text_field_input.dart';
 import 'package:instagram_app/resources/snackbar_function.dart';
 import 'package:instagram_app/Screens/screen_dimension/web_screen.dart';
+import 'package:instagram_app/Screens/auth_screens/sign_up_screen.dart';
 import 'package:instagram_app/Screens/screen_dimension/mobile_screen.dart';
 import 'package:instagram_app/Screens/screen_dimension/screen_dimension.dart';
 
@@ -17,6 +17,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   var _isLoading = false;
+  bool isTextFocused = false;
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -26,6 +27,13 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+  }
+
+  // Function to dissapear thing when text field is opened
+  void updateIsTextFocused(bool isFocused) {
+    setState(() {
+      isTextFocused = isFocused;
+    });
   }
 
   // Login user method
@@ -77,118 +85,142 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-          child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 32),
-        width: double.infinity,
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Spacer(),
-              //svg logo image
-              Image.asset(
-                'assets/images/instagram.png',
-                height: 75,
-              ),
-              const Spacer(),
-
-              //email text field
-              TextFieldInput(
-                labelText: 'Username, email or mobile number',
-                keyboardType: TextInputType.emailAddress,
-                textEditingController: _emailController,
-                validator: (value) {
-                  if (value == null ||
-                      value.trim().isEmpty ||
-                      !value.contains('@')) {
-                    return 'invalid email address.';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 20),
-
-              //password text field
-              TextFieldInput(
-                keyboardType: TextInputType.text,
-                labelText: 'Password',
-                textEditingController: _passwordController,
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Password is required.';
-                  } else if (value.length < 8) {
-                    return 'Password must be at least 8 characters long.';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 20),
-
-              //login button
-              InkWell(
-                onTap: () {
-                  logIn();
-                },
-                child: Container(
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(4)),
-                    color: blueColor,
-                  ),
-                  child: _isLoading
-                      ? const CircularProgressIndicator(color: primaryColor)
-                      : const Text(
-                          'Log in',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                ),
-              ),
-              const Spacer(flex: 2),
-
-              //transition to signning up
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          width: double.infinity,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Visibility(
+                  visible: !isTextFocused,
+                  child: TextButton(
+                    onPressed: () {},
                     child: const Text(
-                      "Don't have an account?",
+                      'English (US)',
                       style: TextStyle(
-                        fontSize: 16,
+                        color: secondaryColor,
                       ),
                     ),
                   ),
-                  GestureDetector(
-                    onTap: _isLoading
-                        ? null
-                        : () {
-                            switchToSignUp();
-                          },
+                ),
+                const Spacer(),
+                //svg logo image
+                Image.asset(
+                  'assets/images/instagram.png',
+                  height: 75,
+                ),
+                const Spacer(),
+
+                //email text field
+                TextFieldInput(
+                  labelText: 'Username, email or mobile number',
+                  keyboardType: TextInputType.emailAddress,
+                  textEditingController: _emailController,
+                  isFocusedCallback: updateIsTextFocused,
+                  validator: (value) {
+                    if (value == null ||
+                        value.trim().isEmpty ||
+                        !value.contains('@')) {
+                      return 'invalid email address.';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+
+                //password text field
+                TextFieldInput(
+                  keyboardType: TextInputType.text,
+                  labelText: 'Password',
+                  textEditingController: _passwordController,
+                  isFocusedCallback: updateIsTextFocused,
+                  obscureText: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Password is required.';
+                    } else if (value.length < 8) {
+                      return 'Password must be at least 8 characters long.';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+
+                //login button
+                InkWell(
+                  onTap: () {
+                    logIn();
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(25)),
+                      color: blueColor,
+                    ),
+                    child: _isLoading
+                        ? const CircularProgressIndicator(color: primaryColor)
+                        : const Text(
+                            'Log in',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                  ),
+                ),
+                const Spacer(flex: 2),
+
+                //switch to sign up
+                Visibility(
+                  visible: !isTextFocused,
+                  child: InkWell(
+                    onTap: () {
+                      switchToSignUp();
+                    },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: const Text(
-                        " Sign up.",
-                        style: TextStyle(
-                          fontSize: 16,
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      decoration: BoxDecoration(
+                        border: Border.all(
                           color: blueColor,
-                          fontWeight: FontWeight.bold,
+                          width: 2,
                         ),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(25)),
+                        color: Colors.transparent,
                       ),
+                      child: _isLoading
+                          ? const CircularProgressIndicator(color: primaryColor)
+                          : const Text(
+                              'Create new account',
+                              style: TextStyle(
+                                color: blueColor,
+                                fontSize: 16,
+                              ),
+                            ),
                     ),
                   ),
-                ],
-              ),
-            ],
+                ),
+                const SizedBox(height: 4),
+
+                //Meta Logo
+                Visibility(
+                  visible: !isTextFocused,
+                  child: Image.asset(
+                    'assets/images/meta.png',
+                    height: 50,
+                    color: primaryColor,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      )),
+      ),
     );
   }
 }

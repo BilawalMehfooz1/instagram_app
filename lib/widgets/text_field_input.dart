@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_app/Screens/auth_screens/login_screen.dart';
 import 'package:instagram_app/data/colors.dart';
 
 class TextFieldInput extends StatefulWidget {
@@ -8,6 +9,7 @@ class TextFieldInput extends StatefulWidget {
     required this.labelText,
     required this.validator,
     required this.keyboardType,
+    this.isFocusedCallback,
     required this.textEditingController,
   });
 
@@ -15,6 +17,7 @@ class TextFieldInput extends StatefulWidget {
   final bool obscureText;
   final TextInputType keyboardType;
   final String? Function(String?)? validator;
+  final void Function(bool)? isFocusedCallback;
   final TextEditingController textEditingController;
 
   @override
@@ -32,6 +35,8 @@ class _TextFieldInputState extends State<TextFieldInput> {
       setState(() {
         _isFocused = _focusNode.hasFocus;
       });
+      // Call the callback function to update isTextFocused
+      widget.isFocusedCallback!(_isFocused);
     });
   }
 
@@ -53,15 +58,16 @@ class _TextFieldInputState extends State<TextFieldInput> {
       child: TextFormField(
         controller: widget.textEditingController,
         focusNode: _focusNode,
+        cursorColor: primaryColor,
         decoration: InputDecoration(
-          border: InputBorder.none,
           alignLabelWithHint: true,
-          filled: true,
+          // filled: true,
+          border: InputBorder.none,
           contentPadding: const EdgeInsets.only(
-            top: 8,
+            top: 10,
             left: 12,
             right: 12,
-            bottom: 24,
+            bottom: 26,
           ),
           labelText: widget.labelText,
           labelStyle: TextStyle(
