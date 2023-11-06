@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:instagram_app/Screens/auth_screens/login_screen.dart';
 import 'package:instagram_app/data/colors.dart';
 
 class TextFieldInput extends StatefulWidget {
   const TextFieldInput({
     super.key,
+    this.icon,
+    this.onPressed,
+    this.isFocusedCallback,
     this.obscureText = false,
     required this.labelText,
     required this.validator,
     required this.keyboardType,
-    this.isFocusedCallback,
     required this.textEditingController,
   });
 
+  final IconData? icon;
   final String labelText;
   final bool obscureText;
   final TextInputType keyboardType;
+  final void Function()? onPressed;
   final String? Function(String?)? validator;
   final void Function(bool)? isFocusedCallback;
   final TextEditingController textEditingController;
@@ -59,6 +62,9 @@ class _TextFieldInputState extends State<TextFieldInput> {
         controller: widget.textEditingController,
         focusNode: _focusNode,
         cursorColor: primaryColor,
+        keyboardType: widget.keyboardType,
+        obscureText: widget.obscureText,
+        validator: widget.validator,
         decoration: InputDecoration(
           alignLabelWithHint: true,
           // filled: true,
@@ -73,10 +79,16 @@ class _TextFieldInputState extends State<TextFieldInput> {
           labelStyle: TextStyle(
             color: _isFocused ? primaryColor : textColor,
           ),
+
+          //
+          suffixIcon: IconButton(
+            onPressed: widget.onPressed,
+            icon: Icon(
+              widget.icon,
+              color: primaryColor,
+            ),
+          ),
         ),
-        keyboardType: widget.keyboardType,
-        obscureText: widget.obscureText,
-        validator: widget.validator,
       ),
     );
   }

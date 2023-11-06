@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instagram_app/data/colors.dart';
 import 'package:instagram_app/resources/auth_method.dart';
 import 'package:instagram_app/widgets/text_field_input.dart';
-import 'package:instagram_app/resources/snackbar_function.dart';
+import 'package:instagram_app/resources/error_messages.dart';
 import 'package:instagram_app/Screens/auth_screens/login_screen.dart';
 import 'package:instagram_app/Screens/screen_dimension/web_screen.dart';
 import 'package:instagram_app/Screens/screen_dimension/mobile_screen.dart';

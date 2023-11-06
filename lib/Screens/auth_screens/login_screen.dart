@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instagram_app/data/colors.dart';
 import 'package:instagram_app/resources/auth_method.dart';
 import 'package:instagram_app/widgets/text_field_input.dart';
-import 'package:instagram_app/resources/snackbar_function.dart';
+import 'package:instagram_app/resources/error_messages.dart';
 import 'package:instagram_app/Screens/screen_dimension/web_screen.dart';
 import 'package:instagram_app/Screens/auth_screens/sign_up_screen.dart';
 import 'package:instagram_app/Screens/screen_dimension/mobile_screen.dart';
@@ -18,9 +18,40 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   var _isLoading = false;
   bool isTextFocused = false;
+  bool _isFirstDialog = false;
+  bool _isSecondDialog = false;
+  var _passwordVisibility = true;
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  //To check either email and password field is empty or not
+  @override
+  void initState() {
+    super.initState();
+    _emailController.addListener(() {
+      if (_emailController.text.isNotEmpty) {
+        setState(() {
+          _isFirstDialog = true;
+        });
+      } else {
+        setState(() {
+          _isFirstDialog = false;
+        });
+      }
+    });
+    _passwordController.addListener(() {
+      if (_passwordController.text.isNotEmpty) {
+        setState(() {
+          _isSecondDialog = true;
+        });
+      } else {
+        setState(() {
+          _isSecondDialog = false;
+        });
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -43,6 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         _isLoading = true;
       });
+
       final res = await AuthMethods().logInUser(
         email: _emailController.text,
         password: _passwordController.text,
@@ -66,6 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       } else {
         if (mounted) {
+          ScaffoldMessenger.of(context).clearSnackBars();
           showSnackBar(content: res, context: context);
         }
       }
@@ -115,19 +148,30 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 //email text field
                 TextFieldInput(
-                  labelText: 'Username, email or mobile number',
+                  labelText: 'Enter your email',
                   keyboardType: TextInputType.emailAddress,
                   textEditingController: _emailController,
                   isFocusedCallback: updateIsTextFocused,
+                  icon: _isFirstDialog ? Icons.clear : null,
+                  onPressed: () {
+                    _emailController.clear();
+                  },
                   validator: (value) {
-                    if (value == null ||
-                        value.trim().isEmpty ||
-                        !value.contains('@')) {
-                      return 'invalid email address.';
+                    if (value == null || value.trim().isEmpty) {
+                      if (!_isFirstDialog) {
+                        showAlertDialog(
+                          title: 'Email required',
+                          content: 'Enter your email to continue.',
+                          buttonText: 'OK',
+                          context: context,
+                        );
+                      }
+                      return null;
                     }
                     return null;
                   },
                 ),
+
                 const SizedBox(height: 20),
 
                 //password text field
@@ -136,12 +180,28 @@ class _LoginScreenState extends State<LoginScreen> {
                   labelText: 'Password',
                   textEditingController: _passwordController,
                   isFocusedCallback: updateIsTextFocused,
-                  obscureText: true,
+                  icon: _isSecondDialog
+                      ? _passwordVisibility
+                          ? Icons.visibility_off
+                          : Icons.visibility
+                      : null,
+                  obscureText: _passwordVisibility,
+                  onPressed: () {
+                    setState(() {
+                      _passwordVisibility = !_passwordVisibility;
+                    });
+                  },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Password is required.';
-                    } else if (value.length < 8) {
-                      return 'Password must be at least 8 characters long.';
+                      if (_isFirstDialog && !_isSecondDialog) {
+                        showAlertDialog(
+                          title: 'Password required',
+                          content: 'Enter your password to continue.',
+                          buttonText: 'OK',
+                          context: context,
+                        );
+                      }
+                      return null;
                     }
                     return null;
                   },
@@ -177,9 +237,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 Visibility(
                   visible: !isTextFocused,
                   child: InkWell(
-                    onTap: () {
-                      switchToSignUp();
-                    },
+                    onTap: _isLoading
+                        ? null
+                        : () {
+                            switchToSignUp();
+                          },
                     child: Container(
                       width: double.infinity,
                       alignment: Alignment.center,
@@ -193,15 +255,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             const BorderRadius.all(Radius.circular(25)),
                         color: Colors.transparent,
                       ),
-                      child: _isLoading
-                          ? const CircularProgressIndicator(color: primaryColor)
-                          : const Text(
-                              'Create new account',
-                              style: TextStyle(
-                                color: blueColor,
-                                fontSize: 16,
-                              ),
-                            ),
+                      child: const Text(
+                        'Create new account',
+                        style: TextStyle(
+                          color: blueColor,
+                          fontSize: 16,
+                        ),
+                      ),
                     ),
                   ),
                 ),
